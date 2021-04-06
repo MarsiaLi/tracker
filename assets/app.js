@@ -1,8 +1,9 @@
-let activities = [];
+import {activities} from "./serviсes.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     let activitiesNav = document.getElementsByTagName("nav")[0];
     initActivityNav(activities, activitiesNav);
+
 });
 // -------activity nav--------
 const initActivityNav = (arr, list) => {
@@ -44,7 +45,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                             </div>
                           </div>`;
     return template;
-}
+};
 // -------end activity nav--------
 
 //------------ add new activity---------------
@@ -58,7 +59,7 @@ const newActivityForm = () => {
 const verifyTitleInput = () => {
     let input = event.target;
     let inputLength = input.value.trim().length;
-    let formBtn = event.target.closest('form').getElementsByTagName('button')[0]
+    let formBtn = event.target.closest('form').getElementsByTagName('button')[0];
     if (inputLength && inputLength > 0) {
         disableBtn(formBtn, false);
         input.classList.remove("is-invalid");
@@ -67,7 +68,7 @@ const verifyTitleInput = () => {
         disableBtn(formBtn, true);
         input.classList.add("is-invalid");
     }
-}
+};
 const submitNewActivity = (event) => {
     event.preventDefault();
     let newActivity = {
@@ -76,17 +77,17 @@ const submitNewActivity = (event) => {
         text: event.target.text.value,
         trackingLog: [],
         isRunning: null
-    }
+    };
     activities.push(newActivity);
     addActivityToNav(newActivity);
     destroyForm('newActivityForm');
     disableBtn(document.getElementById('newActivityBtn'), false);
-}
+};
 const cancel = () => {
     event.preventDefault();
     destroyForm('newActivityForm');
     disableBtn(document.getElementById('newActivityBtn'), false);
-}
+};
 const destroyForm = (id) => {
     let form = document.getElementById(id);
     form.remove();
@@ -121,7 +122,7 @@ const toggleActivity = () => {
     }
     totalDiv.innerText = totalHText;
 
-}
+};
 // -------end control activity--------
 
 // -------shared--------
@@ -147,7 +148,7 @@ const getTotalH = (trackingLog) => {
         totalH = (totalMs / (1000 * 60 * 60)).toFixed(2);
     }
     return totalH;
-}
+};
 // -------end shared--------
 
 
