@@ -1,2 +1,5 @@
 # tracker
-Activity Tracker by Vanilla JS
+> - Vanilla JS project
+> - exclusively for demonstration purpose
+> - no back-end included
+
