@@ -1,21 +1,33 @@
 import {activities} from "./serviсes.js";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', (event) => {
     let activitiesNav = document.getElementsByTagName("nav")[0];
     initActivityNav(activities, activitiesNav);
-
+    // listeners
+    let newActivityBtn = document.getElementById("newActivityBtn");
+    newActivityBtn.addEventListener('click',()=>newActivityForm());
 });
+
+
 // -------activity nav--------
-const initActivityNav = (arr, list) => {
+const initActivityNav = (arr=[], list) => {
     arr.forEach(item => {
         let template = generateActivityCard(item);
         list.appendChild(template);
-    })
+    });
+    let cardBtns = [...document.getElementsByClassName("toggleActivityBtn")];
+    cardBtns.forEach((btn)=>{
+        // listener to refine
+        btn.addEventListener('click', ()=>toggleActivity());
+    });
 };
 const addActivityToNav = (activity) => {
     let activitiesNav = document.getElementsByTagName("nav")[0];
     let template = generateActivityCard(activity);
     activitiesNav.appendChild(template);
+    // listener
+    let btn = activitiesNav.lastChild.getElementsByClassName("toggleActivityBtn")[0];
+    btn.addEventListener('click', ()=>toggleActivity());
 };
 const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     let template = document.createElement('a',);
@@ -40,7 +52,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                                  <div class="startDate">Started: ${startDate}</div>
                                  <div>${text}</div>
                                  <div class="total">Total, h: ${total}</div>                                 
-                                 <button type="button" class="btn btn-light" onclick="toggleActivity()">${btnText}</button>                                 
+                                 <button type="button" class="btn btn-light toggleActivityBtn">${btnText}</button>                                 
                                </div>
                             </div>
                           </div>`;
@@ -55,6 +67,12 @@ const newActivityForm = () => {
     let clon = temp.content.cloneNode(true);
     disableBtn(event.target, true);
     board.appendChild(clon);
+    // listeners
+    let titleInput = document.getElementById("activity-input-title");
+    let form = document.getElementById("newActivityForm");
+    titleInput.addEventListener('input',()=>verifyTitleInput());
+    form.addEventListener('submit',()=>submitNewActivity(event));
+    form.addEventListener('reset',()=>cancel());
 };
 const verifyTitleInput = () => {
     let input = event.target;
@@ -84,7 +102,6 @@ const submitNewActivity = (event) => {
     disableBtn(document.getElementById('newActivityBtn'), false);
 };
 const cancel = () => {
-    event.preventDefault();
     destroyForm('newActivityForm');
     disableBtn(document.getElementById('newActivityBtn'), false);
 };
@@ -134,7 +151,6 @@ const disableBtn = (btn, isDisabled) => {
     }
 };
 const getTotalH = (trackingLog) => {
-    console.log(trackingLog);
     let totalMs, totalH = 0;
     if (trackingLog.length) {
         totalMs = trackingLog.reduce((acc, entry) => {
