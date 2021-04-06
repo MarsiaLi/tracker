@@ -38,7 +38,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                                <div class="card-text">
                                  <div class="startDate">Started: ${startDate}</div>
                                  <div>${text}</div>
-                                 <div class="total">Total, h: ${total} / Real time timer</div>                                 
+                                 <div class="total">Total, h: ${total}</div>                                 
                                  <button type="button" class="btn btn-light" onclick="toggleActivity()">${btnText}</button>                                 
                                </div>
                             </div>
