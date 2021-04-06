@@ -1,0 +1,20 @@
+h1 {
+    text-align: center;
+}
+.nav-link{
+    color: black;
+    width: 100%;
+}
+.nav-link:hover{
+    color: #0dcaf0;
+    cursor: pointer;
+}
+.nav-link:hover .tracking, .nav-link:hover .pending{
+    color: white;
+}
+.card.tracking{
+    background: #198754;
+}
+.card.pending{
+    background: #ffc107;
+}
