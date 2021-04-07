@@ -1,5 +1,4 @@
 # tracker
-- Vanilla JS project
-- exclusively for demonstration purpose
+- HTML5, Bootstrap5, Vanilla JS
 - no back-end included
 
