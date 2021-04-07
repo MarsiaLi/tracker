@@ -5,20 +5,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
     initActivityNav(activities, activitiesNav);
     // listeners
     let newActivityBtn = document.getElementById("newActivityBtn");
-    newActivityBtn.addEventListener('click',()=>newActivityForm());
+    newActivityBtn.addEventListener('click', () => newActivityForm());
 });
 
 
 // -------activity nav--------
-const initActivityNav = (arr=[], list) => {
+const initActivityNav = (arr = [], list) => {
     arr.forEach(item => {
         let template = generateActivityCard(item);
         list.appendChild(template);
     });
+    //listeners
+
     let cardBtns = [...document.getElementsByClassName("toggleActivityBtn")];
-    cardBtns.forEach((btn)=>{
+    cardBtns.forEach((btn) => {
         // listener to refine
-        btn.addEventListener('click', ()=>toggleActivity());
+        btn.addEventListener('click', () => toggleActivity());
+    });
+    let cardDeleteBtns = [...document.getElementsByClassName("cardDeleteBtn")];
+    cardDeleteBtns.forEach((btn) => {
+        btn.addEventListener('click', () => deleteActivity());
     });
 };
 const addActivityToNav = (activity) => {
@@ -27,7 +33,10 @@ const addActivityToNav = (activity) => {
     activitiesNav.appendChild(template);
     // listener
     let btn = activitiesNav.lastChild.getElementsByClassName("toggleActivityBtn")[0];
-    btn.addEventListener('click', ()=>toggleActivity());
+    btn.addEventListener('click', () => toggleActivity());
+    let deleteBtn = activitiesNav.lastChild.getElementsByClassName("cardDeleteBtn")[0];
+    deleteBtn.addEventListener('click', () => deleteActivity());
+
 };
 const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     let template = document.createElement('a',);
@@ -47,7 +56,10 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     template.classList.add("nav-link");
     template.innerHTML = `<div class="card ${status}" data-id=${id}>
                             <div class="card-body">
-                               <h5 class="card-title">${title}</h5>
+                                <div class="activity-card-header">
+                                    <h5 class="card-title">${title}</h5>
+                                    <button type="button" class="btn btn-secondary cardDeleteBtn" aria-label="delete"><i class="bi bi-trash"></i></button>
+                                </div>                            
                                <div class="card-text">
                                  <div class="startDate">Started: ${startDate}</div>
                                  <div>${text}</div>
@@ -70,9 +82,9 @@ const newActivityForm = () => {
     // listeners
     let titleInput = document.getElementById("activity-input-title");
     let form = document.getElementById("newActivityForm");
-    titleInput.addEventListener('input',()=>verifyTitleInput());
-    form.addEventListener('submit',()=>submitNewActivity(event));
-    form.addEventListener('reset',()=>cancel());
+    titleInput.addEventListener('input', () => verifyTitleInput());
+    form.addEventListener('submit', () => submitNewActivity(event));
+    form.addEventListener('reset', () => cancel());
 };
 const verifyTitleInput = () => {
     let input = event.target;
@@ -129,17 +141,28 @@ const toggleActivity = () => {
         activityCard.classList.add('tracking');
         activityCardBtn.innerText = 'stop';
 
-        totalHText=`Total, h: ${getTotalH(activity.trackingLog)}+`;
+        totalHText = `Total, h: ${getTotalH(activity.trackingLog)}+`;
     } else {
         activity.trackingLog[activity.trackingLog.length - 1].end = Date.now();
         activityCard.classList.remove('tracking');
         activityCard.classList.add('pending');
         activityCardBtn.innerText = 'start';
-        totalHText=`Total, h: ${getTotalH(activity.trackingLog)}`;
+        totalHText = `Total, h: ${getTotalH(activity.trackingLog)}`;
     }
     totalDiv.innerText = totalHText;
 
 };
+const deleteActivity = () => {
+    let activityCard = event.target.closest('.card');
+    let activityCardLink = event.target.closest('.nav-link');
+    let activityId = activityCard.getAttribute('data-id');
+    let activityIndex = activities.indexOf(activities.find(element => element.id === activityId));
+    activities.splice(activityIndex, 1);
+    activityCardLink.remove();
+    console.log(activities);
+    // add  listener to newly created item
+}
+
 // -------end control activity--------
 
 // -------shared--------
@@ -160,7 +183,7 @@ const getTotalH = (trackingLog) => {
             } else {
                 return acc;
             }
-        },0);
+        }, 0);
         totalH = (totalMs / (1000 * 60 * 60)).toFixed(2);
     }
     return totalH;

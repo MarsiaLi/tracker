@@ -18,3 +18,12 @@ h1 {
 .card.pending{
     background: #ffc107;
 }
+.activity-card-header{
+    display: flex;
+}
+.card-title{
+    flex-grow: 1;
+}
+.toggleActivityBtn{
+    width: 100%;
+}
