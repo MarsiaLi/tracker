@@ -157,7 +157,7 @@ const methods = {
     },
     toggleActivity() {
         let activityCard = event.target.closest('.card');
-        let activityCardBtn = activityCard.getElementsByTagName('button')[0];
+        let activityCardBtn = activityCard.getElementsByClassName('toggleActivityBtn')[0];
         let activityId = activityCard.getAttribute('data-id');
         let activity = activities.find(element => element.id === activityId);
         let startDateDiv = activityCard.getElementsByClassName('startDate')[0];
