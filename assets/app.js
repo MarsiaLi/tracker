@@ -3,7 +3,11 @@ import {activities} from "./serviсes.js";
 document.addEventListener('DOMContentLoaded', () => {
     let activitiesNav = document.getElementsByTagName("nav")[0];
     initActivityNav(activities, activitiesNav);
-    addListener("id", "newActivityBtn", "click", newActivityForm, false, document);
+
+    addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
+    addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
+    addListener("id", "activityForm", "submit", submitActivityData, false, document);
+
 });
 
 // -------activity nav--------
@@ -55,21 +59,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     return template;
 };
 // -------end activity nav--------
-
-//------------ add new activity---------------
-const newActivityForm = () => {
-    let temp = document.getElementById("newActivityFormTemplate");
-    let board = document.getElementById("activityBoard");
-    let clon = temp.content.cloneNode(true);
-    disableBtn(event.target, true);
-    board.appendChild(clon);
-
-    addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
-    addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
-
-    addListener("id", "newActivityForm", "submit", submitNewActivity, false, document);
-    addListener("id", "newActivityForm", "reset", cancel, false, document);
-};
+//--------add new activity--------
 const verifyTitleInput=()=> {
     let input = event.target;
     let inputLength = input.value.trim().length;
@@ -82,7 +72,7 @@ const verifyTitleInput=()=> {
         input.classList.add("is-invalid");
     }
 };
-const submitNewActivity=()=>{
+const submitActivityData=()=>{
     event.preventDefault();
     let newActivity = {
         id: (Date.now()).toString(),
@@ -93,18 +83,10 @@ const submitNewActivity=()=>{
     };
     activities.push(newActivity);
     addActivityToNav(newActivity);
-    destroyForm('newActivityForm');
-    disableBtn(document.getElementById('newActivityBtn'), false);
-};
-const cancel=()=> {
-    destroyForm('newActivityForm');
-    disableBtn(document.getElementById('newActivityBtn'), false);
+    // reset form on submit
+    // close sidebar on submit
 };
 
-const destroyForm = (id) => {
-    let form = document.getElementById(id);
-    form.remove();
-};
 //------------ end add new activity---------------
 //------------ control activity---------------
 const toggleActivity=()=> {
@@ -160,17 +142,16 @@ const addListener = (selector, selectorName, eventType, handler, isMultiple = fa
             elements = [...inside.getElementsByClassName(selectorName)];
         }
         elements.forEach((el) => {
-            // el.addEventListener(eventType, () => methods[handlerName]());
             el.addEventListener(eventType, handler);
         });
     } else {
         if (selector === "id") {
+            console.log('from ID');
             element = inside.getElementById(selectorName);
         }
         if (selector === "class") {
             element = inside.getElementsByClassName(selectorName)[0];
         }
-        // element.addEventListener(eventType, () => methods[handlerName]());
         element.addEventListener(eventType, handler);
     }
 };
