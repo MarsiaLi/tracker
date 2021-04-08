@@ -83,8 +83,7 @@ const submitActivityData=()=>{
     };
     activities.push(newActivity);
     addActivityToNav(newActivity);
-    // reset form on submit
-    // close sidebar on submit
+    event.target.reset();
 };
 
 //------------ end add new activity---------------
