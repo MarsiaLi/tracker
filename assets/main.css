@@ -45,3 +45,6 @@ header button{
     text-transform: uppercase;
     font-weight: bold;
 }
+.toggleActivityBtn.btn-success {
+    background-color: #52a27d;
+    border-color: #52a27d;}

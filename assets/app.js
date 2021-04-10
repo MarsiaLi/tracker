@@ -42,7 +42,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
         total = `${totalH}`;
     }
     cardDiv.classList.add("card");
-    if (status.length){
+    if (status.length) {
         cardDiv.classList.add(status);
     }
     cardDiv.setAttribute("data-id", id);
@@ -56,13 +56,13 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                                  <div>${text}</div>
                                  <div class="total">Total, h: ${total}</div>                                                                                                
                                </div>                            
-                                <button type="button" class="btn btn-light toggleActivityBtn">${btnText}</button>
+                                <button type="button" class="btn btn-success toggleActivityBtn">${btnText}</button>
                           </div>`;
     return cardDiv;
 };
 // -------end activity nav--------
 //--------add new activity--------
-const verifyTitleInput=()=> {
+const verifyTitleInput = () => {
     let input = event.target;
     let inputLength = input.value.trim().length;
     let formBtn = event.target.closest('form').getElementsByTagName('button')[0];
@@ -74,7 +74,7 @@ const verifyTitleInput=()=> {
         input.classList.add("is-invalid");
     }
 };
-const submitActivityData=()=>{
+const submitActivityData = () => {
     event.preventDefault();
     let newActivity = {
         id: (Date.now()).toString(),
@@ -90,7 +90,7 @@ const submitActivityData=()=>{
 
 //------------ end add new activity---------------
 //------------ control activity---------------
-const toggleActivity=()=> {
+const toggleActivity = () => {
     let activityCard = event.target.closest('.card');
     let activityCardBtn = activityCard.getElementsByClassName('toggleActivityBtn')[0];
     let activityId = activityCard.getAttribute('data-id');
@@ -107,6 +107,8 @@ const toggleActivity=()=> {
         activityCard.classList.remove('pending');
         activityCard.classList.add('tracking');
         activityCardBtn.innerText = 'stop';
+        activityCardBtn.classList.remove('btn-success');
+        activityCardBtn.classList.add('btn-danger');
 
         totalHText = `Total, h: ${getTotalH(activity.trackingLog)}+`;
     } else {
@@ -114,12 +116,14 @@ const toggleActivity=()=> {
         activityCard.classList.remove('tracking');
         activityCard.classList.add('pending');
         activityCardBtn.innerText = 'start';
+        activityCardBtn.classList.remove('btn-danger');
+        activityCardBtn.classList.add('btn-success');
         totalHText = `Total, h: ${getTotalH(activity.trackingLog)}`;
     }
     totalDiv.innerText = totalHText;
 
 };
-const deleteActivity = ()=> {
+const deleteActivity = () => {
     let activityCard = event.target.closest('.card');
     let activityId = activityCard.getAttribute('data-id');
     let activityIndex = activities.indexOf(activities.find(element => element.id === activityId));
