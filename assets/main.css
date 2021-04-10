@@ -8,17 +8,14 @@ header h2{
 header button{
     margin-left: 10px;
 }
-
-.nav-link{
-    color: black;
-    width: 100%;
+.activities{
+    display: flex;
+    flex-wrap: wrap;
 }
-.nav-link:hover{
-    color: #0dcaf0;
-    cursor: pointer;
-}
-.nav-link:hover .tracking, .nav-link:hover .pending{
-    color: white;
+.card{
+    width: 300px;
+    flex-grow: 1;
+    margin: 10px;
 }
 .card.tracking{
     background: #198754;
@@ -32,6 +29,19 @@ header button{
 .card-title{
     flex-grow: 1;
 }
+.card-body{
+    display: flex;
+    flex-direction: column;
+}
+.card-text{
+    flex-grow: 1;
+    padding: 20px 0;
+}
+.cardDeleteBtn{
+    height: fit-content;
+}
 .toggleActivityBtn{
     width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
 }
