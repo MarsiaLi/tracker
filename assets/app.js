@@ -54,9 +54,9 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                                <div class="card-text">
                                  <div class="startDate">Started: ${startDate}</div>
                                  <div>${text}</div>
-                                 <div class="total">Total, h: ${total}</div>                                 
-                                 <button type="button" class="btn btn-light toggleActivityBtn">${btnText}</button>                                 
+                                 <div class="total">Total, h: ${total}</div>                                                                                                
                                </div>                            
+                                <button type="button" class="btn btn-light toggleActivityBtn">${btnText}</button>
                           </div>`;
     return cardDiv;
 };
