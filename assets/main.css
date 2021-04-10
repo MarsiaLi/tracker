@@ -1,6 +1,14 @@
-h1 {
-    text-align: center;
+header{
+    display: flex;
+    margin: 10px 0;
 }
+header h2{
+    flex-grow: 1;
+}
+header button{
+    margin-left: 10px;
+}
+
 .nav-link{
     color: black;
     width: 100%;

@@ -1,8 +1,8 @@
 import {activities} from "./serviсes.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    let activitiesNav = document.getElementsByTagName("nav")[0];
-    initActivityNav(activities, activitiesNav);
+    let activitiesContainer = document.getElementsByClassName("activities")[0];
+    initActivities(activities, activitiesContainer);
 
     addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
     addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
@@ -11,23 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // -------activity nav--------
-const initActivityNav = (arr = [], list) => {
+const initActivities = (arr = [], container) => {
     arr.forEach(item => {
-        let template = generateActivityCard(item);
-        list.appendChild(template);
+        let card = generateActivityCard(item);
+        container.appendChild(card);
     });
     addListener("class", "toggleActivityBtn", "click", toggleActivity, true, document);
     addListener("class", "cardDeleteBtn", "click", deleteActivity, true, document);
 };
-const addActivityToNav = (activity) => {
-    let activitiesNav = document.getElementsByTagName("nav")[0];
-    let template = generateActivityCard(activity);
-    activitiesNav.appendChild(template);
-    addListener("class", "toggleActivityBtn", "click", toggleActivity, false, activitiesNav.lastChild);
-    addListener("class", "cardDeleteBtn", "click", deleteActivity, false, activitiesNav.lastChild);
+const addActivityToContainer = (activity) => {
+    let container = document.getElementsByClassName("activities")[0];
+    let card = generateActivityCard(activity);
+    container.appendChild(card);
+    addListener("class", "toggleActivityBtn", "click", toggleActivity, false, container.lastChild);
+    addListener("class", "cardDeleteBtn", "click", deleteActivity, false, container.lastChild);
 };
 const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
-    let template = document.createElement('a',);
+    let cardDiv = document.createElement('div',);
     let startDate = "hasn't started yet", status = "", btnText = "start", total = "0.0";
     let totalH = getTotalH(trackingLog);
     if (trackingLog.length) {
@@ -41,9 +41,12 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
         status = "pending";
         total = `${totalH}`;
     }
-    template.classList.add("nav-link");
-    template.innerHTML = `<div class="card ${status}" data-id=${id}>
-                            <div class="card-body">
+    cardDiv.classList.add("card");
+    if (status.length){
+        cardDiv.classList.add(status);
+    }
+    cardDiv.setAttribute("data-id", id);
+    cardDiv.innerHTML = `<div class="card-body">
                                 <div class="activity-card-header">
                                     <h5 class="card-title">${title}</h5>
                                     <button type="button" class="btn btn-secondary cardDeleteBtn" aria-label="delete"><i class="bi bi-trash"></i></button>
@@ -53,10 +56,9 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                                  <div>${text}</div>
                                  <div class="total">Total, h: ${total}</div>                                 
                                  <button type="button" class="btn btn-light toggleActivityBtn">${btnText}</button>                                 
-                               </div>
-                            </div>
+                               </div>                            
                           </div>`;
-    return template;
+    return cardDiv;
 };
 // -------end activity nav--------
 //--------add new activity--------
@@ -82,7 +84,7 @@ const submitActivityData=()=>{
         isRunning: null
     };
     activities.push(newActivity);
-    addActivityToNav(newActivity);
+    addActivityToContainer(newActivity);
     event.target.reset();
 };
 
@@ -119,11 +121,10 @@ const toggleActivity=()=> {
 };
 const deleteActivity = ()=> {
     let activityCard = event.target.closest('.card');
-    let activityCardLink = event.target.closest('.nav-link');
     let activityId = activityCard.getAttribute('data-id');
     let activityIndex = activities.indexOf(activities.find(element => element.id === activityId));
     activities.splice(activityIndex, 1);
-    activityCardLink.remove();
+    activityCard.remove();
 };
 //------------ end control activity---------------
 // -------shared--------
@@ -145,7 +146,6 @@ const addListener = (selector, selectorName, eventType, handler, isMultiple = fa
         });
     } else {
         if (selector === "id") {
-            console.log('from ID');
             element = inside.getElementById(selectorName);
         }
         if (selector === "class") {
