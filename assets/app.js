@@ -1,4 +1,5 @@
-import {activities} from "./serviсes.js";
+// import {activities} from "./serviсes.js";
+let activities =[];
 
 document.addEventListener('DOMContentLoaded', () => {
     addActivitiesToContainer(activities);
@@ -10,14 +11,35 @@ document.addEventListener('DOMContentLoaded', () => {
 // -------activity nav--------
 const addActivitiesToContainer = (activities = []) => {
     let container = document.getElementsByClassName("activities")[0];
-    activities.forEach(item => {
-        let card = generateActivityCard(item);
-        container.appendChild(card);
-        addListener("class", "toggleActivityBtn", "click", toggleActivity, false, container.lastChild);
-        addListener("class", "cardDeleteBtn", "click", deleteActivity, false, container.lastChild);
-    });
+    let empty = document.getElementsByClassName("emptyCard")[0];
+    if (activities.length) {
+        if (empty){
+            empty.remove();
+        }
+        activities.forEach(item => {
+            let card = generateActivityCard(item);
+            container.appendChild(card);
+            addListener("class", "toggleActivityBtn", "click", toggleActivity, false, container.lastChild);
+            addListener("class", "cardDeleteBtn", "click", deleteActivity, false, container.lastChild);
+        });
+    } else {
+        showNoActivity(container);
+    }
 };
-
+const generateNoActivityCard = ()=>{
+    let cardDiv = document.createElement('div',);
+    cardDiv.classList.add("card");
+    cardDiv.classList.add("emptyCard");
+    cardDiv.innerHTML = `<div class="card-body">
+                                <div class="activity-card-header">
+                                    <h5 class="card-title">No activity in your list</h5>                                    
+                                </div>                            
+                               <div class="card-text">
+                                 Add your activities and start tracking right now!                                                                                                
+                               </div>                                                          
+                          </div>`;
+    return cardDiv;
+}
 const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     let cardDiv = document.createElement('div',);
     let startDate = "hasn't started yet", status = "", btnText = "start", total = "0.0";
@@ -119,11 +141,19 @@ const deleteActivity = () => {
     let activityCard = event.target.closest('.card');
     let activityId = activityCard.getAttribute('data-id');
     let activityIndex = activities.indexOf(activities.find(element => element.id === activityId));
+    let container = event.target.closest('.activities');
     activities.splice(activityIndex, 1);
     activityCard.remove();
+    if (!activities.length){
+        showNoActivity(container);
+    }
 };
 //------------ end control activity---------------
 // -------shared--------
+const showNoActivity=(container)=>{
+    let card = generateNoActivityCard();
+    container.appendChild(card);
+};
 const disableBtn = (btn, isDisabled) => {
     if (!isDisabled) {
         btn.removeAttribute('disabled');
