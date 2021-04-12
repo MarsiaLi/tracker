@@ -1,31 +1,23 @@
 import {activities} from "./serviсes.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    let activitiesContainer = document.getElementsByClassName("activities")[0];
-    initActivities(activities, activitiesContainer);
-
+    addActivitiesToContainer(activities);
     addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
     addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
     addListener("id", "activityForm", "submit", submitActivityData, false, document);
-
 });
 
 // -------activity nav--------
-const initActivities = (arr = [], container) => {
-    arr.forEach(item => {
+const addActivitiesToContainer = (activities = []) => {
+    let container = document.getElementsByClassName("activities")[0];
+    activities.forEach(item => {
         let card = generateActivityCard(item);
         container.appendChild(card);
+        addListener("class", "toggleActivityBtn", "click", toggleActivity, false, container.lastChild);
+        addListener("class", "cardDeleteBtn", "click", deleteActivity, false, container.lastChild);
     });
-    addListener("class", "toggleActivityBtn", "click", toggleActivity, true, document);
-    addListener("class", "cardDeleteBtn", "click", deleteActivity, true, document);
 };
-const addActivityToContainer = (activity) => {
-    let container = document.getElementsByClassName("activities")[0];
-    let card = generateActivityCard(activity);
-    container.appendChild(card);
-    addListener("class", "toggleActivityBtn", "click", toggleActivity, false, container.lastChild);
-    addListener("class", "cardDeleteBtn", "click", deleteActivity, false, container.lastChild);
-};
+
 const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     let cardDiv = document.createElement('div',);
     let startDate = "hasn't started yet", status = "", btnText = "start", total = "0.0";
@@ -84,7 +76,7 @@ const submitActivityData = () => {
         isRunning: null
     };
     activities.push(newActivity);
-    addActivityToContainer(newActivity);
+    addActivitiesToContainer([newActivity]);
     event.target.reset();
 };
 
