@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // -------activities--------
 const seedActivities=()=>{
-    activities=seeds;
+    activities=activities.concat(seeds);
     addActivitiesToContainer(activities);
 }
 const addActivitiesToContainer = (activities = []) => {
