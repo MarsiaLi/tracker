@@ -144,6 +144,7 @@ const submitActivityData = () => {
     };
     activities.push(newActivity);
     addActivitiesToContainer([newActivity]);
+    saveActivitiesToLocalStorage([newActivity]);
     event.target.reset();
 };
 
@@ -188,6 +189,7 @@ const deleteActivity = () => {
     let activityIndex = activities.indexOf(activities.find(element => element.id === activityId));
     let container = event.target.closest('.activities');
     activities.splice(activityIndex, 1);
+    localStorage.removeItem(activityId);
     activityCard.remove();
     if (!activities.length) {
         showNoActivity(container);
