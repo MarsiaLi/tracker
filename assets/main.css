@@ -1,12 +1,13 @@
 header{
     display: flex;
+    align-items: center;
     margin: 10px 0;
 }
 header h2{
     flex-grow: 1;
 }
 header button{
-    margin-left: 10px;
+    margin: 5px 0 5px 10px;
 }
 .activities{
     display: flex;
@@ -47,4 +48,11 @@ header button{
 }
 .toggleActivityBtn.btn-success {
     background-color: #52a27d;
-    border-color: #52a27d;}
+    border-color: #52a27d;
+}
+@media screen and (max-width: 485px){
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

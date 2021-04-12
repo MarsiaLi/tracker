@@ -1,27 +1,63 @@
 import {activities as seeds} from "./serviсes.js";
-let activities =[];
+
+let activities = [];
 let seedBtn;
+let isLocalStorage = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-    seedBtn=document.getElementById("seedBtn");
-    seedBtn.addEventListener("click", ()=>{seedActivities()});
-    addActivitiesToContainer(activities);
+    seedBtn = document.getElementById("seedBtn");
+    seedBtn.addEventListener("click", () => {
+        seedActivities()
+    });
+
     addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
     addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
     addListener("id", "activityForm", "submit", submitActivityData, false, document);
+
+    if (typeof (Storage) !== "undefined") {
+        document.getElementById("storageSetting").innerHTML =
+            ` <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="local" id="localStorageCheckbox" >
+                    <label class="form-check-label" for="localStorageCheckbox">
+                        Store data locally
+                    </label>
+               </div>`;
+        addListener("id", "localStorageCheckbox", "change", localStorageMode, false, document);
+    } else {
+        document.getElementById("storageSetting").innerHTML =
+            ` <div>
+                 Sorry! No Web Storage support.
+               </div>`;
+    }
+    addActivitiesToContainer(activities);
 });
 
+const localStorageMode = (event) => {
+    isLocalStorage = event.target.checked;
+    if (isLocalStorage){
+        console.log ('use local storage');
+    } else {
+        // reset data, clear local storage;
+        console.log ('clear local storage');
+    };
+};
 // -------activities--------
-const seedActivities=()=>{
-    activities=activities.concat(seeds);
+const seedActivities = () => {
+    activities = activities.concat(seeds);
     addActivitiesToContainer(activities);
-}
+    saveActivitiesToLocalStorage(activities);
+};
+const saveActivitiesToLocalStorage =(activities)=>{
+    activities.forEach(item => {
+       localStorage[item.id]=JSON.stringify(item);
+    });
+};
 const addActivitiesToContainer = (activities = []) => {
     let container = document.getElementsByClassName("activities")[0];
     let empty = document.getElementsByClassName("emptyCard")[0];
     if (activities.length) {
-        disableBtn (seedBtn, true);
-        if (empty){
+        disableBtn(seedBtn, true);
+        if (empty) {
             empty.remove();
         }
         activities.forEach(item => {
@@ -32,10 +68,10 @@ const addActivitiesToContainer = (activities = []) => {
         });
     } else {
         showNoActivity(container);
-        disableBtn (seedBtn, false);
+        disableBtn(seedBtn, false);
     }
 };
-const generateNoActivityCard = ()=>{
+const generateNoActivityCard = () => {
     let cardDiv = document.createElement('div',);
     cardDiv.classList.add("card");
     cardDiv.classList.add("emptyCard");
@@ -153,14 +189,14 @@ const deleteActivity = () => {
     let container = event.target.closest('.activities');
     activities.splice(activityIndex, 1);
     activityCard.remove();
-    if (!activities.length){
+    if (!activities.length) {
         showNoActivity(container);
-        disableBtn (seedBtn, false);
+        disableBtn(seedBtn, false);
     }
 };
 //------------ end control activity---------------
 // -------shared--------
-const showNoActivity=(container)=>{
+const showNoActivity = (container) => {
     let card = generateNoActivityCard();
     container.appendChild(card);
 };
