@@ -1,18 +1,26 @@
-// import {activities} from "./serviсes.js";
+import {activities as seeds} from "./serviсes.js";
 let activities =[];
+let seedBtn;
 
 document.addEventListener('DOMContentLoaded', () => {
+    seedBtn=document.getElementById("seedBtn");
+    seedBtn.addEventListener("click", ()=>{seedActivities()});
     addActivitiesToContainer(activities);
     addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
     addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
     addListener("id", "activityForm", "submit", submitActivityData, false, document);
 });
 
-// -------activity nav--------
+// -------activities--------
+const seedActivities=()=>{
+    activities=seeds;
+    addActivitiesToContainer(activities);
+}
 const addActivitiesToContainer = (activities = []) => {
     let container = document.getElementsByClassName("activities")[0];
     let empty = document.getElementsByClassName("emptyCard")[0];
     if (activities.length) {
+        disableBtn (seedBtn, true);
         if (empty){
             empty.remove();
         }
@@ -24,6 +32,7 @@ const addActivitiesToContainer = (activities = []) => {
         });
     } else {
         showNoActivity(container);
+        disableBtn (seedBtn, false);
     }
 };
 const generateNoActivityCard = ()=>{
@@ -74,7 +83,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                           </div>`;
     return cardDiv;
 };
-// -------end activity nav--------
+// -------end activities--------
 //--------add new activity--------
 const verifyTitleInput = () => {
     let input = event.target;
@@ -146,6 +155,7 @@ const deleteActivity = () => {
     activityCard.remove();
     if (!activities.length){
         showNoActivity(container);
+        disableBtn (seedBtn, false);
     }
 };
 //------------ end control activity---------------
