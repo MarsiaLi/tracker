@@ -1,79 +1,50 @@
-header {
+header{
     display: flex;
     margin: 10px 0;
 }
-
-header h2 {
+header h2{
     flex-grow: 1;
 }
-
-header button {
+header button{
     margin-left: 10px;
 }
-input, textarea{
-    max-width: 100vw;
-}
-#activityForm .card {
-    width: min-content;
-}
-.invalid-feedback{
-    margin-bottom: 10px;
-}
-
-.activities {
+.activities{
     display: flex;
     flex-wrap: wrap;
 }
-
-.card {
+.card{
     width: 300px;
     flex-grow: 1;
     margin: 10px;
 }
-
-.card.tracking {
+.card.tracking{
     background: #198754;
 }
-
-.card.pending {
+.card.pending{
     background: #ffc107;
 }
-
-.activity-card-header {
+.activity-card-header{
     display: flex;
 }
-
-.card-title {
+.card-title{
     flex-grow: 1;
 }
-
-.card-body {
+.card-body{
     display: flex;
     flex-direction: column;
 }
-
-.card-text {
+.card-text{
     flex-grow: 1;
     padding: 20px 0;
 }
-
-.cardDeleteBtn {
+.cardDeleteBtn{
     height: fit-content;
 }
-
-.toggleActivityBtn {
+.toggleActivityBtn{
     width: 100%;
     text-transform: uppercase;
     font-weight: bold;
 }
-
 .toggleActivityBtn.btn-success {
     background-color: #52a27d;
-    border-color: #52a27d;
-}
-
-@media screen and (max-width: 485px) {
-    header {
-        flex-direction: column;
-    }
-}
+    border-color: #52a27d;}
