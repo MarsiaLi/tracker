@@ -1,27 +1,66 @@
 import {activities as seeds} from "./serviсes.js";
-let activities =[];
+
+let activities = [];
 let seedBtn;
+let isLocalStorage = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-    seedBtn=document.getElementById("seedBtn");
-    seedBtn.addEventListener("click", ()=>{seedActivities()});
-    addActivitiesToContainer(activities);
+    
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+    if (typeof (Storage) !== "undefined") {
+        addListener("id", "localStorageCheckbox", "change", localStorageMode, false, document);
+        if (localStorage.activities) {
+            isLocalStorage = true;
+            document.getElementById("localStorageCheckbox").checked = true;
+            activities.push(...JSON.parse(localStorage.activities));
+        }
+    } else {
+        document.getElementById("storageSetting").innerHTML =
+            ` <div>
+                 Sorry! No Web Storage support.
+               </div>`;
+    }
+    seedBtn = document.getElementById("seedBtn");
+    seedBtn.addEventListener("click", () => {
+        seedActivities()
+    });
+
     addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
     addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
     addListener("id", "activityForm", "submit", submitActivityData, false, document);
+
+    addActivitiesToContainer(activities);
 });
 
+const localStorageMode = (event) => {
+    isLocalStorage = event.target.checked;
+    if (isLocalStorage) {
+        localStorage.activities = JSON.stringify(activities);
+    } else {
+        localStorage.removeItem("activities");
+    }
+};
 // -------activities--------
-const seedActivities=()=>{
-    activities=activities.concat(seeds);
+const seedActivities = () => {
+    activities = activities.concat(seeds);
     addActivitiesToContainer(activities);
-}
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
+};
+const updateLocalStorage = (activities) => {
+    localStorage.activities = JSON.stringify(activities);
+};
 const addActivitiesToContainer = (activities = []) => {
     let container = document.getElementsByClassName("activities")[0];
     let empty = document.getElementsByClassName("emptyCard")[0];
     if (activities.length) {
-        disableBtn (seedBtn, true);
-        if (empty){
+        disableBtn(seedBtn, true);
+        if (empty) {
             empty.remove();
         }
         activities.forEach(item => {
@@ -32,10 +71,10 @@ const addActivitiesToContainer = (activities = []) => {
         });
     } else {
         showNoActivity(container);
-        disableBtn (seedBtn, false);
+        disableBtn(seedBtn, false);
     }
 };
-const generateNoActivityCard = ()=>{
+const generateNoActivityCard = () => {
     let cardDiv = document.createElement('div',);
     cardDiv.classList.add("card");
     cardDiv.classList.add("emptyCard");
@@ -108,9 +147,11 @@ const submitActivityData = () => {
     };
     activities.push(newActivity);
     addActivitiesToContainer([newActivity]);
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
     event.target.reset();
 };
-
 //------------ end add new activity---------------
 //------------ control activity---------------
 const toggleActivity = () => {
@@ -144,7 +185,9 @@ const toggleActivity = () => {
         totalHText = `Total, h: ${getTotalH(activity.trackingLog)}`;
     }
     totalDiv.innerText = totalHText;
-
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
 };
 const deleteActivity = () => {
     let activityCard = event.target.closest('.card');
@@ -152,15 +195,18 @@ const deleteActivity = () => {
     let activityIndex = activities.indexOf(activities.find(element => element.id === activityId));
     let container = event.target.closest('.activities');
     activities.splice(activityIndex, 1);
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
     activityCard.remove();
-    if (!activities.length){
+    if (!activities.length) {
         showNoActivity(container);
-        disableBtn (seedBtn, false);
+        disableBtn(seedBtn, false);
     }
 };
 //------------ end control activity---------------
 // -------shared--------
-const showNoActivity=(container)=>{
+const showNoActivity = (container) => {
     let card = generateNoActivityCard();
     container.appendChild(card);
 };
