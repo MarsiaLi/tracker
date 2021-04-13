@@ -5,15 +5,6 @@ let seedBtn;
 let isLocalStorage = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-    seedBtn = document.getElementById("seedBtn");
-    seedBtn.addEventListener("click", () => {
-        seedActivities()
-    });
-
-    addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
-    addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
-    addListener("id", "activityForm", "submit", submitActivityData, false, document);
-
     if (typeof (Storage) !== "undefined") {
         document.getElementById("storageSetting").innerHTML =
             ` <div class="form-check form-switch">
@@ -23,12 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     </label>
                </div>`;
         addListener("id", "localStorageCheckbox", "change", localStorageMode, false, document);
+        for (let i=0; i < localStorage.length; i++){
+          activities.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+        }
+
     } else {
         document.getElementById("storageSetting").innerHTML =
             ` <div>
                  Sorry! No Web Storage support.
                </div>`;
     }
+
+
+    seedBtn = document.getElementById("seedBtn");
+    seedBtn.addEventListener("click", () => {
+        seedActivities()
+    });
+
+    addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
+    addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
+    addListener("id", "activityForm", "submit", submitActivityData, false, document);
+
     addActivitiesToContainer(activities);
 });
 
