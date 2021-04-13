@@ -14,10 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </label>
                </div>`;
         addListener("id", "localStorageCheckbox", "change", localStorageMode, false, document);
-        for (let i=0; i < localStorage.length; i++){
-          activities.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+        if (localStorage.activities) {
+            isLocalStorage = true;
+            document.getElementById("localStorageCheckbox").checked = true;
+            activities.push(...JSON.parse(localStorage.activities));
         }
-
+        ;
     } else {
         document.getElementById("storageSetting").innerHTML =
             ` <div>
@@ -40,23 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const localStorageMode = (event) => {
     isLocalStorage = event.target.checked;
-    if (isLocalStorage){
-        console.log ('use local storage');
+    if (isLocalStorage) {
+        localStorage.activities = JSON.stringify(activities);
     } else {
-        // reset data, clear local storage;
-        console.log ('clear local storage');
-    };
+        localStorage.removeItem("activities");
+    }
 };
 // -------activities--------
 const seedActivities = () => {
     activities = activities.concat(seeds);
     addActivitiesToContainer(activities);
-    saveActivitiesToLocalStorage(activities);
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
 };
-const saveActivitiesToLocalStorage =(activities)=>{
-    activities.forEach(item => {
-       localStorage[item.id]=JSON.stringify(item);
-    });
+const updateLocalStorage = (activities) => {
+    localStorage.activities = JSON.stringify(activities);
 };
 const addActivitiesToContainer = (activities = []) => {
     let container = document.getElementsByClassName("activities")[0];
@@ -150,7 +151,9 @@ const submitActivityData = () => {
     };
     activities.push(newActivity);
     addActivitiesToContainer([newActivity]);
-    saveActivitiesToLocalStorage([newActivity]);
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
     event.target.reset();
 };
 
@@ -195,7 +198,9 @@ const deleteActivity = () => {
     let activityIndex = activities.indexOf(activities.find(element => element.id === activityId));
     let container = event.target.closest('.activities');
     activities.splice(activityIndex, 1);
-    localStorage.removeItem(activityId);
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
     activityCard.remove();
     if (!activities.length) {
         showNoActivity(container);
