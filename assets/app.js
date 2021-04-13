@@ -1,17 +1,23 @@
 import {activities as seeds} from "./serviсes.js";
 
-let activities = [];
-let seedBtn;
-let isLocalStorage = false;
-
+let activities = [], seedBtn, isLocalStorage = false;
 document.addEventListener('DOMContentLoaded', () => {
-    
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
+    init();
+});
 
+const init = () => {
+    initStorage();
+    initSeeding();
+    initForm();
+    addActivitiesToContainer(activities);
+};
+// ---storage---
+const initStorage = () => {
     if (typeof (Storage) !== "undefined") {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
         addListener("id", "localStorageCheckbox", "change", localStorageMode, false, document);
         if (localStorage.activities) {
             isLocalStorage = true;
@@ -24,18 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  Sorry! No Web Storage support.
                </div>`;
     }
-    seedBtn = document.getElementById("seedBtn");
-    seedBtn.addEventListener("click", () => {
-        seedActivities()
-    });
-
-    addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
-    addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
-    addListener("id", "activityForm", "submit", submitActivityData, false, document);
-
-    addActivitiesToContainer(activities);
-});
-
+};
 const localStorageMode = (event) => {
     isLocalStorage = event.target.checked;
     if (isLocalStorage) {
@@ -44,7 +39,17 @@ const localStorageMode = (event) => {
         localStorage.removeItem("activities");
     }
 };
-// -------activities--------
+const updateLocalStorage = (activities) => {
+    localStorage.activities = JSON.stringify(activities);
+};
+// ---end storage---
+// ---seeding---
+const initSeeding = () => {
+    seedBtn = document.getElementById("seedBtn");
+    seedBtn.addEventListener("click", () => {
+        seedActivities()
+    });
+};
 const seedActivities = () => {
     activities = activities.concat(seeds);
     addActivitiesToContainer(activities);
@@ -52,9 +57,8 @@ const seedActivities = () => {
         updateLocalStorage(activities);
     }
 };
-const updateLocalStorage = (activities) => {
-    localStorage.activities = JSON.stringify(activities);
-};
+// ---end seeding---
+// -------activities--------
 const addActivitiesToContainer = (activities = []) => {
     let container = document.getElementsByClassName("activities")[0];
     let empty = document.getElementsByClassName("emptyCard")[0];
@@ -124,6 +128,11 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
 };
 // -------end activities--------
 //--------add new activity--------
+const initForm = () => {
+    addListener("id", "activity-input-title", "input", verifyTitleInput, false, document);
+    addListener("id", "activity-input-title", "blur", verifyTitleInput, false, document);
+    addListener("id", "activityForm", "submit", submitActivityData, false, document);
+}
 const verifyTitleInput = () => {
     let input = event.target;
     let inputLength = input.value.trim().length;
