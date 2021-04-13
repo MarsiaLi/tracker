@@ -190,7 +190,9 @@ const toggleActivity = () => {
         totalHText = `Total, h: ${getTotalH(activity.trackingLog)}`;
     }
     totalDiv.innerText = totalHText;
-
+    if (isLocalStorage) {
+        updateLocalStorage(activities);
+    }
 };
 const deleteActivity = () => {
     let activityCard = event.target.closest('.card');
