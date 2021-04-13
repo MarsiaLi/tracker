@@ -20,8 +20,15 @@
             Add New
         </button>
     </header>
-    <div id="storageSetting"></div>
-    <!--<div class="offcanvas offcanvas-start" tabindex="-1" id="activityForm" aria-labelledby="activityDataForm">-->
+    <div id="storageSetting">
+        <div class="form-check form-switch" >
+            <input class="form-check-input" type="checkbox" value="local" id="localStorageCheckbox" >
+            <label class="form-check-label" for="localStorageCheckbox">
+                Store data locally
+            </label>
+        </div>
+        <a href="#" data-bs-toggle="tooltip" title="Don't switch off local storage to prevent loosing your data"><i class="bi bi-info-square"></i> </a>
+    </div>
     <div class="offcanvas offcanvas-start" tabindex="-1" id="activityFormSidebar" aria-labelledby="activityDataForm">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="activityDataForm">New Activity</h5>

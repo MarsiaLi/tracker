@@ -5,29 +5,25 @@ let seedBtn;
 let isLocalStorage = false;
 
 document.addEventListener('DOMContentLoaded', () => {
+    
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
     if (typeof (Storage) !== "undefined") {
-        document.getElementById("storageSetting").innerHTML =
-            ` <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="local" id="localStorageCheckbox" >
-                    <label class="form-check-label" for="localStorageCheckbox">
-                        Store data locally
-                    </label>
-               </div>`;
         addListener("id", "localStorageCheckbox", "change", localStorageMode, false, document);
         if (localStorage.activities) {
             isLocalStorage = true;
             document.getElementById("localStorageCheckbox").checked = true;
             activities.push(...JSON.parse(localStorage.activities));
         }
-        ;
     } else {
         document.getElementById("storageSetting").innerHTML =
             ` <div>
                  Sorry! No Web Storage support.
                </div>`;
     }
-
-
     seedBtn = document.getElementById("seedBtn");
     seedBtn.addEventListener("click", () => {
         seedActivities()
@@ -156,7 +152,6 @@ const submitActivityData = () => {
     }
     event.target.reset();
 };
-
 //------------ end add new activity---------------
 //------------ control activity---------------
 const toggleActivity = () => {
