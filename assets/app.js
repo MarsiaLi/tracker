@@ -94,13 +94,14 @@ const generateNoActivityCard = () => {
 }
 const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     let cardDiv = document.createElement('div',);
-    let startDate = "hasn't started yet", status = "", btnText = "start", total = "0.0";
+    let startDate = "hasn't started yet", status = "", btnText = "start", btnClass = "btn-success", total = "0.0";
     let totalH = getTotalH(trackingLog);
     if (trackingLog.length) {
         startDate = new Date(trackingLog[0].start).toDateString();
     }
     if (isRunning) {
         status = "tracking";
+        btnClass="btn-danger";
         btnText = "stop";
         total = `${totalH}+`;
     } else if (!isRunning && isRunning !== null) {
@@ -122,7 +123,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                                  <div>${text}</div>
                                  <div class="total">Total, h: ${total}</div>                                                                                                
                                </div>                            
-                                <button type="button" class="btn btn-success toggleActivityBtn">${btnText}</button>
+                                <button type="button" class="btn ${btnClass} toggleActivityBtn">${btnText}</button>
                           </div>`;
     return cardDiv;
 };
