@@ -222,9 +222,9 @@ const showNoActivity = (container) => {
 };
 const disableBtn = (btn, isDisabled) => {
     if (!isDisabled) {
-        btn.removeAttribute('disabled');
+        btn.disabled=false;
     } else {
-        btn.setAttribute('disabled', '');
+        btn.disabled =true;
     }
 };
 const addListener = (selector, selectorName, eventType, handler, isMultiple = false, inside) => {
