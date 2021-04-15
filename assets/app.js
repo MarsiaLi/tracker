@@ -120,8 +120,11 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
                                 </div>                            
                                <div class="card-text">
                                  <div class="startDate">Started: ${startDate}</div>
-                                 <div>${text}</div>
-                                 <div class="total">Total, h: ${total}</div>                                                                                                
+                                 <div>${text}</div>                                 
+                                 <div class="total">Total, h: ${total} </div>                                   
+                                 <div class="d-flex justify-content-center">
+                                    <div class="spinner-border text-success" role="status"></div>                                 
+                                 </div>                                 
                                </div>                            
                                 <button type="button" class="btn ${btnClass} toggleActivityBtn">${btnText}</button>
                           </div>`;

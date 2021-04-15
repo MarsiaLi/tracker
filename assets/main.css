@@ -30,19 +30,24 @@ header button {
     display: flex;
     flex-wrap: wrap;
 }
-
+.offcanvas .card{
+    margin: 0;
+    max-width: -webkit-fill-available;
+}
 .card {
     width: 300px;
     flex-grow: 1;
     margin: 10px;
 }
 
-/*.card.tracking{*/
-/*background: #198754;*/
-/*}*/
-/*.card.pending{*/
-/*background: #ffc107;*/
-/*}*/
+.card .spinner-border {
+    display: none;
+}
+
+.card.tracking .spinner-border {
+    display: inline-block;
+}
+
 .activity-card-header {
     display: flex;
 }
@@ -80,5 +85,8 @@ header button {
     header {
         flex-direction: column;
         align-items: flex-start;
+    }
+    header button{
+        margin-left: 0;
     }
 }
