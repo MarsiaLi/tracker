@@ -12,13 +12,30 @@
 <body>
 <header class="header">
     <h1 style="margin: 0.5em auto;"><i class="bi bi-clock-history"></i> The Tracker</h1>
+    <button class="btn btn-primary"  data-bs-toggle="offcanvas" data-bs-target="#about"
+            aria-controls="offcanvasRight">
+        About
+    </button>
+
 </header>
+
+<aside>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="about" aria-labelledby="aboutApp">
+        <div class="offcanvas-header">
+            <h5 id="aboutApp">About The Trecker App</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div><h6>Features:</h6><ul id="about-features"></ul></div>
+            <div><h6>How it works:</h6><ul id="about-works"></ul></div>
+        </div>
+    </div>
+</aside>
 <main>
     <div class="container">
         <header>
             <h2>Activities</h2>
-            <button class="btn btn-primary" id="seedBtn" type="button">Seed activities</button>
-            <!--<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#activityForm"-->
+            <button class="btn btn-primary" id="seedBtn" type="button">Seed</button>
             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#activityFormSidebar"
                     aria-controls="activityFormSidebar">

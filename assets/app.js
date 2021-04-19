@@ -1,4 +1,4 @@
-import {activities as seeds} from "./serviсes.js";
+import {activities as seeds, about} from "./serviсes.js";
 
 let activities = [], seedBtn, isLocalStorage = false;
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,22 @@ const init = () => {
     initSeeding();
     initForm();
     addActivitiesToContainer(activities);
+    initAbout();
 };
+// ---about---
+const initAbout = () => {
+    document.getElementById("aboutApp").innerText = about.intro;
+    appendItemsToList("about-features", about.features);
+    appendItemsToList("about-works", about.howItWorks);
+
+};
+const appendItemsToList = (listId, items) => {
+    let itemsHtml = items.reduce((acc, item) => {
+        return acc.concat(`<li>${item}</li>`)
+    }, "");
+    document.getElementById(listId).innerHTML = itemsHtml;
+};
+// ---end about---
 // ---storage---
 const initStorage = () => {
     if (typeof (Storage) !== "undefined") {
@@ -101,7 +116,7 @@ const generateActivityCard = ({id, title, text, trackingLog, isRunning}) => {
     }
     if (isRunning) {
         status = "tracking";
-        btnClass="btn-danger";
+        btnClass = "btn-danger";
         btnText = "stop";
         total = `${totalH}+`;
     } else if (!isRunning && isRunning !== null) {
@@ -225,9 +240,9 @@ const showNoActivity = (container) => {
 };
 const disableBtn = (btn, isDisabled) => {
     if (!isDisabled) {
-        btn.disabled=false;
+        btn.disabled = false;
     } else {
-        btn.disabled =true;
+        btn.disabled = true;
     }
 };
 const addListener = (selector, selectorName, eventType, handler, isMultiple = false, inside) => {

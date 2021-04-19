@@ -19,11 +19,16 @@ header button {
 #storageSetting .form-check {
     display: inline-block;
 }
-
+#about{
+    min-width: 45vw;
+}
 .header {
     background-color: #0d6efd;
     color: white;
     margin-top: 0;
+}
+.header .btn {
+    margin-right: 0.5rem;
 }
 
 .activities {
@@ -82,7 +87,7 @@ header button {
 }
 
 @media screen and (max-width: 485px) {
-    header {
+    header:not(.header) {
         flex-direction: column;
         align-items: flex-start;
     }
