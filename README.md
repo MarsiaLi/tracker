@@ -1,5 +1,5 @@
 # tracker
-The Tracker is a web-application to track your time spent by activities.
+[The Tracker](https://tracker-594a6.web.app/) is a web-application to track your time spent by activities.
 - HTML5, CSS3, Bootstrap5, Vanilla JS
 - Local storage mode available
 
